@@ -1,7 +1,20 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 export default function App() {
+  const { register, handleSubmit } = useForm();
+  const [output, setOutput] = useState('');
+
+  function createUser(data: any) {
+    setOutput(JSON.stringify(data, null, 2));
+  }
+
   return (
-    <main className='min-h-screen bg-zinc-800 flex justify-center items-center'>
-      <form className='flex flex-col gap-6 w-full max-w-sm bg-zinc-700 shadow-md p-10 rounded-md'>
+    <main className='min-h-screen bg-zinc-900 flex justify-center items-center'>
+      <form
+        className='flex flex-col gap-6 w-full max-w-sm bg-zinc-800 shadow-md p-10 rounded-md'
+        onSubmit={handleSubmit(createUser)}
+      >
         <h2 className='text-center text-white font-bold text-4xl mb-3'>
           Create an account
         </h2>
@@ -10,10 +23,10 @@ export default function App() {
             Email:
           </label>
           <input
-            className='border border-zinc-200 shadow-sm rounded h-10'
+            className='bg-zinc-500 border border-zinc-400 text-white px-2 shadow-sm rounded h-10'
             type='email'
-            name='email'
             id='email'
+            {...register('email')}
           />
         </div>
         <div className='flex flex-col gap-1'>
@@ -21,10 +34,10 @@ export default function App() {
             Password:
           </label>
           <input
-            className='border border-zinc-200 shadow-sm rounded h-10'
+            className='bg-zinc-500 border border-zinc-400 text-white px-2 shadow-sm rounded h-10'
             type='password'
-            name='password'
             id='password'
+            {...register('password')}
           />
         </div>
         <button
@@ -33,6 +46,7 @@ export default function App() {
         >
           Submit
         </button>
+        <pre className='text-white'>{output}</pre>
       </form>
     </main>
   );
