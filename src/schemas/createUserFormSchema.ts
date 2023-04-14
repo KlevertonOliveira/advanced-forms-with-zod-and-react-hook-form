@@ -30,6 +30,17 @@ export const createUserFormSchema = z
       .string()
       .nonempty('Confirm Password is required')
       .min(8, 'Password must have at least 8 characters'),
+    techs: z
+      .array(
+        z.object({
+          title: z.string().nonempty('Title is required'),
+          workload: z.coerce.number().min(20).max(60),
+        })
+      )
+      .min(2, 'Must have at least 2 techs')
+      .refine((techs) => {
+        return techs.some((tech) => tech.workload > 50);
+      }, 'You must have at least 1 technology with workload above 50'),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (confirmPassword !== password) {
